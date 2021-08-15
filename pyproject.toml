@@ -1,0 +1,62 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = "backend"
+authors = ["Nikita <grishchenko@rsue.ru>"]
+
+
+[tool.black]
+line-length = 79
+
+
+[tool.isort]
+multi_line_output=3
+include_trailing_comma=true
+use_parentheses=true
+line_length=79
+
+
+[tool.taskipy.tasks]
+manage = "python ./backend/manage.py"
+clear = "python ./backend/manage.py clear"
+dumpdata = "python ./backend/manage.py dump"
+migrate = "python ./backend/manage.py migrate"
+server = "python ./backend/manage.py runserver"
+loaddata = "python ./backend/manage.py loaddata"
+startapp = "python ./backend/manage.py createapp"
+initconfig = "python ./backend/manage.py initconfig"
+dockervolumes = "python ./backend/manage.py dockervolumes"
+makemigrations = "python ./backend/manage.py makemigrations"
+createsuperuser = "python ./backend/manage.py createsuperuser"
+collectstatic = "python ./backend/manage.py collectstatic --noinput"
+gunicorn = "gunicorn --timeout 300 --chdir ./backend core.wsgi:application -b 0.0.0.0:8000"
+defaultadmin = "python ./backend/manage.py defaultadmin"
+defaultfixtures = "python ./backend/manage.py defaultfixtures"
+createapp = "python ./backend/manage.py createapp"
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = "^3.1.5"
+django-widget-tweaks = "^1.4.8"
+django-webpack-loader = "^0.7.0"
+djangorestframework = "^3.12.2"
+django-environ = "^0.4.5"
+gunicorn = "^20.0.4"
+django-filter = "^2.4.0"
+psycopg2 = "^2.9.1"
+drf-yasg = "^1.20.0"
+Pillow = "^7.0.0"
+django-cors-headers = "^3.8.0"
+djangorestframework-jwt = "^1.11.0"
+
+
+
+
+[tool.poetry.dev-dependencies]
+taskipy = "^1.6.0"
+black = {version = "^21.7b0", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

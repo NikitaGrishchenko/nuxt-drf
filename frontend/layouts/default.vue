@@ -51,6 +51,11 @@
             icon: 'mdi-account',
             title: 'Users',
             to: '/users'
+          },
+          {
+            icon: 'mdi-account',
+            title: 'Login',
+            to: '/login'
           }
         ]
       }

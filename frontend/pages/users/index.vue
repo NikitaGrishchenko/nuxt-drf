@@ -31,9 +31,9 @@
     methods: {
       refreshToken() {
         this.$axios
-          .post('base/refresh/', { withCredentials: true })
+          .get('base/users/', { withCredentials: true })
           .then((response) => {
-            console.log(response)
+            this.users = response.data
           })
       }
     }

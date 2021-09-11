@@ -5,4 +5,12 @@ export default function ({ $axios, redirect }) {
 
   const csrf = Cookies.get('csrftoken')
   $axios.setHeader('X-CSRFToken', csrf)
+
+  console.log(csrf)
+
+  $axios.onRequest((config) => {
+    config.withCredentials = true
+
+    return config
+  })
 }

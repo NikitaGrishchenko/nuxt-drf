@@ -22,19 +22,15 @@
       }
     },
     created() {
-      this.$axios
-        .get('base/users/', { withCredentials: true })
-        .then((response) => {
-          this.users = response.data
-        })
+      this.$axios.get('base/users/').then((response) => {
+        this.users = response.data
+      })
     },
     methods: {
       refreshToken() {
-        this.$axios
-          .get('base/users/', { withCredentials: true })
-          .then((response) => {
-            this.users = response.data
-          })
+        this.$axios.get('base/users/').then((response) => {
+          this.users = response.data
+        })
       }
     }
   }

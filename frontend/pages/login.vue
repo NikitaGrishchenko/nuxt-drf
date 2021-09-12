@@ -23,7 +23,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="handleSubmit()">Login</v-btn>
+            <v-btn color="primary" :loading="loading" @click="handleSubmit()"
+              >Login</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -36,23 +38,29 @@
   // import Cookies from 'js-cookie'
 
   export default {
+    layout: 'empty',
     data() {
       return {
         username: '',
-        password: ''
+        password: '',
+        loading: false
       }
     },
 
     methods: {
       handleSubmit() {
+        this.loading = true
         const username = this.username
         const password = this.password
-        // this.$store.dispatch('auth/login', { username, password })
-        this.$axios.post(
-          'base/login/',
-          { username, password },
-          { withCredentials: true }
-        )
+        this.$store
+          .dispatch('auth/login', { username, password })
+          .then(() => {
+            this.loading = false
+            this.$router.push('/')
+          })
+          .catch(() => {
+            this.loading = false
+          })
       }
     }
   }

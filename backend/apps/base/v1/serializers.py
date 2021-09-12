@@ -33,6 +33,7 @@ class TokenObtainPairSerializer(BaseTokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
+
         token.payload.update(cls.get_extra_keys(user))
         return token
 

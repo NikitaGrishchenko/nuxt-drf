@@ -1,5 +1,8 @@
 # from apps.base.models import User
-from apps.base.v1.serializers import UserListSerializer
+from apps.base.v1.serializers import (
+    TokenObtainPairSerializer,
+    UserListSerializer,
+)
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.http import HttpResponse
@@ -37,6 +40,7 @@ class LoginView(APIView):
     """Представление для сохранения токенов доступа JWT в cookie с флагом httpOnly"""
 
     permission_classes = [AllowAny]
+    # serializer_class = TokenObtainPairSerializer
 
     def post(self, request, format=None):
         data = request.data
@@ -48,6 +52,8 @@ class LoginView(APIView):
             if user.is_active:
                 data = get_tokens_for_user(user)
 
+                payload = data["access"].split(".")[1]
+
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
                     value=data["access"],
@@ -56,9 +62,18 @@ class LoginView(APIView):
                     httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
                     samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
                 )
-
+                response.set_cookie(
+                    key=settings.SIMPLE_JWT["PAYLOAD_COOKIE"],
+                    value=payload,
+                    expires=settings.SIMPLE_JWT["PAYLOAD_COOKIE_LIFETIME"],
+                    secure=settings.SIMPLE_JWT["PAYLOAD_COOKIE_SECURE"],
+                    samesite=settings.SIMPLE_JWT["PAYLOAD_COOKIE_SAMESITE"],
+                )
                 # csrf.get_token(request)
-                response.data = {"Success": "Login successfully", "data": data}
+                response.data = {
+                    "Success": "Login successfully",
+                    "payload": payload,
+                }
                 return response
             else:
                 return Response(

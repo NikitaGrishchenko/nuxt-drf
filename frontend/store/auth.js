@@ -4,15 +4,16 @@ import axios from 'axios'
 
 export const LOGOUT = 'LOGOUT'
 export const LOGIN = 'LOGIN'
+export const GET_USER = 'GET_USER'
 
 export const state = () => ({
-  userId: null,
+  user: null,
   isAuthenticated: false
 })
 
 export const getters = () => ({
-  userId: (state) => state.userId,
-  checkPayload: (state) => state.payload !== null
+  user: (state) => state.user
+  // checkPayload: (state) => state.payload !== null
 })
 
 export const mutations = {
@@ -22,6 +23,10 @@ export const mutations = {
 
   [LOGOUT](state) {
     state.isAuthenticated = false
+  },
+
+  [GET_USER](state, { user }) {
+    state.user = user
   }
 }
 
@@ -32,6 +37,7 @@ export const actions = {
         .post('base/login/', { username, password })
         .then((response) => {
           commit(LOGIN)
+
           resolve(response)
         })
         .catch((error) => {

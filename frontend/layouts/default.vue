@@ -22,6 +22,9 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="`Vuetify.js`" />
       <v-spacer />
+
+      <p v-if="user">{{ user.email }}</p>
+      <v-btn elevation="2" outlined>Выйти</v-btn>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -35,6 +38,7 @@
   export default {
     data() {
       return {
+        user: null,
         drawer: false,
         items: [
           {
@@ -58,6 +62,25 @@
             to: '/login'
           }
         ]
+      }
+    },
+    created() {
+      this.getUser()
+    },
+    methods: {
+      getUser() {
+        return new Promise((resolve, reject) => {
+          this.$axios
+            .get('base/user/info/')
+            .then((response) => {
+              this.user = response.data
+              console.log(this.user)
+              resolve(response)
+            })
+            .catch((error) => {
+              reject(error)
+            })
+        })
       }
     }
   }

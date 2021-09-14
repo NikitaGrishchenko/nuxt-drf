@@ -38,7 +38,7 @@
   // import Cookies from 'js-cookie'
 
   export default {
-    layout: 'empty',
+    layout: 'zero',
     data() {
       return {
         username: '',

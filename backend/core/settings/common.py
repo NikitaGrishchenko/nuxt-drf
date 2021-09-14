@@ -150,6 +150,7 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": False,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "SIGNING_KEY": env("SECRET_KEY"),
     # custom token cookie
     "AUTH_COOKIE": "access_token",
     "AUTH_COOKIE_SECURE": False,

@@ -49,6 +49,7 @@ drf-yasg = "^1.20.0"
 Pillow = "^7.0.0"
 django-cors-headers = "^3.8.0"
 djangorestframework-simplejwt = "^4.7.2"
+PyJWT = "^2.1.0"
 
 
 

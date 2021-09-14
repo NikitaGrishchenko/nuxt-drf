@@ -9,6 +9,7 @@
       </v-col>
       <v-col cols="12">
         <v-btn @click="refreshToken">Refresh Token</v-btn>
+        {{ userInfo }}
       </v-col>
     </v-row>
   </v-container>
@@ -18,7 +19,8 @@
   export default {
     data() {
       return {
-        users: []
+        users: [],
+        userInfo: null
       }
     },
     created() {
@@ -28,8 +30,8 @@
     },
     methods: {
       refreshToken() {
-        this.$axios.get('base/users/').then((response) => {
-          this.users = response.data
+        this.$axios.get('base/user/info').then((response) => {
+          this.userInfo = response.data
         })
       }
     }

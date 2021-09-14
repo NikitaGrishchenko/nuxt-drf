@@ -1,8 +1,6 @@
 # from apps.base.models import User
-from apps.base.v1.serializers import (
-    TokenObtainPairSerializer,
-    UserListSerializer,
-)
+import jwt
+from apps.base.v1.serializers import TokenObtainPairSerializer, UserSerializer
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.http import HttpResponse
@@ -10,7 +8,7 @@ from django.middleware import csrf
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,10 +18,30 @@ from rest_framework_simplejwt.views import (
 )
 
 
+class UserInformationView(APIView):
+    """Информация о авторизированном пользователе"""
+
+    # serializer_class = UserSerializer
+    # User = get_user_model()
+    # queryset = User.objects.all()
+
+    def get(self, request, format=None):
+        if request.COOKIES:
+            token = request.COOKIES["access_token"]
+            print(token)
+            decode = jwt.decode(token, options={"verify_signature": False})
+            user_id = decode["user_id"]
+            User = get_user_model()
+            queryset = User.objects.get(id=user_id)
+            serializer = UserSerializer(queryset)
+        # response = (queryset)
+        return Response(serializer.data)
+
+
 class UserListView(ListCreateAPIView):
     """Вывод пользователей"""
 
-    serializer_class = UserListSerializer
+    serializer_class = UserSerializer
     User = get_user_model()
     queryset = User.objects.all()
 
@@ -52,7 +70,8 @@ class LoginView(APIView):
             if user.is_active:
                 data = get_tokens_for_user(user)
 
-                payload = data["access"].split(".")[1]
+                user_id = user.id
+                print(user_id)
 
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
@@ -62,17 +81,17 @@ class LoginView(APIView):
                     httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
                     samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
                 )
-                response.set_cookie(
-                    key=settings.SIMPLE_JWT["PAYLOAD_COOKIE"],
-                    value=payload,
-                    expires=settings.SIMPLE_JWT["PAYLOAD_COOKIE_LIFETIME"],
-                    secure=settings.SIMPLE_JWT["PAYLOAD_COOKIE_SECURE"],
-                    samesite=settings.SIMPLE_JWT["PAYLOAD_COOKIE_SAMESITE"],
-                )
+                # response.set_cookie(
+                #     key=settings.SIMPLE_JWT["PAYLOAD_COOKIE"],
+                #     value=user_id,
+                #     expires=settings.SIMPLE_JWT["PAYLOAD_COOKIE_LIFETIME"],
+                #     secure=settings.SIMPLE_JWT["PAYLOAD_COOKIE_SECURE"],
+                #     samesite=settings.SIMPLE_JWT["PAYLOAD_COOKIE_SAMESITE"],
+                # )
                 # csrf.get_token(request)
                 response.data = {
                     "Success": "Login successfully",
-                    "payload": payload,
+                    "user_id": user_id,
                 }
                 return response
             else:

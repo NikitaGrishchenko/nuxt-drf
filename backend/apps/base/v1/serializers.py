@@ -87,9 +87,9 @@ class TokenRefreshSerializer(BaseTokenRefreshSerializer):
         return data
 
 
-class UserListSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer):
     """Список пользователей"""
 
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ["username", "email", "first_name", "last_name", "is_active"]

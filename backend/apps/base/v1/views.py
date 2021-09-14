@@ -3,7 +3,7 @@ import jwt
 from apps.base.v1.serializers import TokenObtainPairSerializer, UserSerializer
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.middleware import csrf
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
@@ -18,23 +18,25 @@ from rest_framework_simplejwt.views import (
 )
 
 
+class CheckUserTokenView(APIView):
+    """Проверка действительности токена доступа"""
+
+    def get(self, request, format=None):
+        return HttpResponse(status=200)
+
+
 class UserInformationView(APIView):
     """Информация о авторизированном пользователе"""
-
-    # serializer_class = UserSerializer
-    # User = get_user_model()
-    # queryset = User.objects.all()
 
     def get(self, request, format=None):
         if request.COOKIES:
             token = request.COOKIES["access_token"]
-            print(token)
+
             decode = jwt.decode(token, options={"verify_signature": False})
             user_id = decode["user_id"]
             User = get_user_model()
             queryset = User.objects.get(id=user_id)
             serializer = UserSerializer(queryset)
-        # response = (queryset)
         return Response(serializer.data)
 
 
@@ -54,8 +56,26 @@ def get_tokens_for_user(user):
     }
 
 
+class LogoutView(APIView):
+    """Представление для удаления токена доступа JWT в cookie с флагом httpOnly"""
+
+    def post(self, request, format=None):
+        response = Response()
+
+        response.set_cookie(
+            key=settings.SIMPLE_JWT["AUTH_COOKIE"],
+            value=None,
+            expires=0,
+        )
+
+        response.data = {
+            "Success": "Logout successfully",
+        }
+        return response
+
+
 class LoginView(APIView):
-    """Представление для сохранения токенов доступа JWT в cookie с флагом httpOnly"""
+    """Представление для сохранения токена доступа JWT в cookie с флагом httpOnly"""
 
     permission_classes = [AllowAny]
     # serializer_class = TokenObtainPairSerializer
@@ -70,8 +90,7 @@ class LoginView(APIView):
             if user.is_active:
                 data = get_tokens_for_user(user)
 
-                user_id = user.id
-                print(user_id)
+                # user_id = user.id
 
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
@@ -81,17 +100,11 @@ class LoginView(APIView):
                     httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
                     samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
                 )
-                # response.set_cookie(
-                #     key=settings.SIMPLE_JWT["PAYLOAD_COOKIE"],
-                #     value=user_id,
-                #     expires=settings.SIMPLE_JWT["PAYLOAD_COOKIE_LIFETIME"],
-                #     secure=settings.SIMPLE_JWT["PAYLOAD_COOKIE_SECURE"],
-                #     samesite=settings.SIMPLE_JWT["PAYLOAD_COOKIE_SAMESITE"],
-                # )
+
                 # csrf.get_token(request)
                 response.data = {
                     "Success": "Login successfully",
-                    "user_id": user_id,
+                    # "user_id": user_id,
                 }
                 return response
             else:

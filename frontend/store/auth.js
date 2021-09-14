@@ -1,4 +1,4 @@
-import axios from 'axios'
+// import axios from 'axios'
 // import Cookies from 'js-cookie'
 // import jwtDecode from 'jwt-decode'
 
@@ -49,8 +49,8 @@ export const actions = {
 
   logout({ commit }) {
     return new Promise((resolve, reject) => {
-      axios
-        .post('auth/delete/')
+      this.$axios
+        .post('base/logout/')
         .then((response) => {
           commit(LOGOUT)
           resolve(response)

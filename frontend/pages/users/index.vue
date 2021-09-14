@@ -17,6 +17,7 @@
 
 <script>
   export default {
+    middleware: 'auth',
     data() {
       return {
         users: [],
@@ -30,8 +31,8 @@
     },
     methods: {
       refreshToken() {
-        this.$axios.get('base/user/info').then((response) => {
-          this.userInfo = response.data
+        this.$axios.get('base/user/checking/').then((response) => {
+          this.userInfo = response
         })
       }
     }

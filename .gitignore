@@ -183,7 +183,11 @@ package-lock.json
 
 graph/\*
 
-\*.pyc
+# Byte-compiled / optimized / DLL files
+*__pycache__/*
+**/*.py
 
-**pycache**/
-\*.py[cod]
+__pycache__/
+
+*.py[cod]
+*$py.class

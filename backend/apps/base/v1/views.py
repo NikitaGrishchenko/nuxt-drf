@@ -1,5 +1,6 @@
 # from apps.base.models import User
-import jwt
+
+from apps.base.services import GetUserCookieHttponly
 from apps.base.v1.serializers import TokenObtainPairSerializer, UserSerializer
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
@@ -29,15 +30,10 @@ class UserInformationView(APIView):
     """Информация о авторизированном пользователе"""
 
     def get(self, request, format=None):
-        if request.COOKIES:
-            token = request.COOKIES["access_token"]
-
-            decode = jwt.decode(token, options={"verify_signature": False})
-            user_id = decode["user_id"]
-            User = get_user_model()
-            queryset = User.objects.get(id=user_id)
-            serializer = UserSerializer(queryset)
-        return Response(serializer.data)
+        if request.COOKIES[settings.SIMPLE_JWT["AUTH_COOKIE"]]:
+            token = request.COOKIES[settings.SIMPLE_JWT["AUTH_COOKIE"]]
+            user = GetUserCookieHttponly.execute({"token": token})
+        return Response(user.data)
 
 
 class UserListView(ListCreateAPIView):

@@ -185,9 +185,6 @@ graph/\*
 
 # Byte-compiled / optimized / DLL files
 *__pycache__/*
-**/*.py
-
 __pycache__/
 
-*.py[cod]
-*$py.class
+*.sqlite3

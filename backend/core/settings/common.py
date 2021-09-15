@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "drf_yasg",
     "widget_tweaks",
+    "service_objects",
     "apps.base",
     # "core.api",
 ]

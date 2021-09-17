@@ -1,5 +1,7 @@
 # from apps.base.models import User
 
+import datetime
+
 from apps.base.services import GetUserCookieHttponly
 from apps.base.v1.serializers import TokenObtainPairSerializer, UserSerializer
 from django.conf import settings
@@ -74,7 +76,6 @@ class LoginView(APIView):
     """Представление для сохранения токена доступа JWT в cookie с флагом httpOnly"""
 
     permission_classes = [AllowAny]
-    # serializer_class = TokenObtainPairSerializer
 
     def post(self, request, format=None):
         data = request.data
@@ -91,7 +92,8 @@ class LoginView(APIView):
                 response.set_cookie(
                     key=settings.SIMPLE_JWT["AUTH_COOKIE"],
                     value=data["access"],
-                    expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+                    expires=datetime.datetime.utcnow()
+                    + settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
                     secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
                     httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
                     samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],

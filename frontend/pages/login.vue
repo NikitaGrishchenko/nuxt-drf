@@ -39,6 +39,7 @@
 
   export default {
     layout: 'zero',
+    middleware: 'login',
     data() {
       return {
         username: '',

@@ -36,10 +36,10 @@
 </template>
 
 <script>
+  // import { mapGetters } from 'vuex'
   export default {
     data() {
       return {
-        user: null,
         drawer: false,
         items: [
           {
@@ -65,23 +65,15 @@
         ]
       }
     },
-    created() {
-      this.getUser()
+    computed: {
+      user() {
+        return this.$store.getters['auth/userInfo']
+      }
     },
+    // created() {
+    //   this.$store.dispatch('auth/currentUserInfo')
+    // },
     methods: {
-      getUser() {
-        return new Promise((resolve, reject) => {
-          this.$axios
-            .get('base/user/info/')
-            .then((response) => {
-              this.user = response.data
-              resolve(response)
-            })
-            .catch((error) => {
-              reject(error)
-            })
-        })
-      },
       handleSubmit() {
         this.$store
           .dispatch('auth/logout')

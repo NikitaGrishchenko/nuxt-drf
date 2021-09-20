@@ -75,7 +75,9 @@ class LogoutView(APIView):
 class LoginView(APIView):
     """Представление для сохранения токена доступа JWT в cookie с флагом httpOnly"""
 
-    permission_classes = [AllowAny]
+    # отключение проверки подлинности токена
+    authentication_classes = []
+    permission_classes = []
 
     def post(self, request, format=None):
         data = request.data

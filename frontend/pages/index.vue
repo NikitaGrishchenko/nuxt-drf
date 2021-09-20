@@ -5,6 +5,6 @@
 </template>
 <script>
   export default {
-    middleware: 'auth'
+    // middleware: 'auth'
   }
 </script>

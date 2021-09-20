@@ -12,8 +12,7 @@ export const state = () => ({
 })
 
 export const getters = () => ({
-  user: (state) => state.user
-  // checkPayload: (state) => state.payload !== null
+  userInfo: (state) => state.user
 })
 
 export const mutations = {
@@ -26,7 +25,8 @@ export const mutations = {
   },
 
   [GET_USER](state, { user }) {
-    state.user = user
+    state.userInfo = user
+    console.log(user)
   }
 }
 
@@ -37,7 +37,6 @@ export const actions = {
         .post('base/login/', { username, password })
         .then((response) => {
           commit(LOGIN)
-
           resolve(response)
         })
         .catch((error) => {
@@ -57,6 +56,23 @@ export const actions = {
         })
         .catch((error) => {
           commit(LOGOUT)
+          reject(error)
+        })
+    })
+  },
+
+  currentUserInfo({ commit }) {
+    return new Promise((resolve, reject) => {
+      this.$axios
+        .get('base/user/info/')
+        .then((response) => {
+          const userData = response.data
+          commit(GET_USER, { userData })
+          console.log('!')
+          resolve(response)
+        })
+        .catch((error) => {
+          // commit(LOGOUT)
           reject(error)
         })
     })

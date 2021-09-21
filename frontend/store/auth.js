@@ -11,9 +11,11 @@ export const state = () => ({
   isAuthenticated: false
 })
 
-export const getters = () => ({
-  userInfo: (state) => state.user
-})
+export const getters = {
+  user: (state) => {
+    return state.user
+  }
+}
 
 export const mutations = {
   [LOGIN](state) {
@@ -24,9 +26,8 @@ export const mutations = {
     state.isAuthenticated = false
   },
 
-  [GET_USER](state, { user }) {
-    state.userInfo = user
-    console.log(user)
+  [GET_USER](state, userData) {
+    state.user = userData
   }
 }
 
@@ -67,8 +68,7 @@ export const actions = {
         .get('base/user/info/')
         .then((response) => {
           const userData = response.data
-          commit(GET_USER, { userData })
-          console.log('!')
+          commit(GET_USER, userData)
           resolve(response)
         })
         .catch((error) => {

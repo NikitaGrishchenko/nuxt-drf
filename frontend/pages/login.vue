@@ -34,9 +34,6 @@
 </template>
 
 <script>
-  // import jwtDecode from 'jwt-decode'
-  // import Cookies from 'js-cookie'
-
   export default {
     layout: 'zero',
     middleware: 'login',

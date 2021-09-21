@@ -1,7 +1,3 @@
-export default function ({ $axios, redirect }) {
-  $axios.get('base/user/checking/').then((response) => {
-    if (response.status !== 200) {
-      return redirect('/login')
-    }
-  })
+export default async function ({ store }) {
+  await store.dispatch('auth/currentUserInfo')
 }

@@ -29,6 +29,7 @@
     </v-app-bar>
     <v-main>
       <v-container>
+        {{ user }}
         <Nuxt />
       </v-container>
     </v-main>
@@ -67,12 +68,9 @@
     },
     computed: {
       user() {
-        return this.$store.getters['auth/userInfo']
+        return this.$store.getters['auth/user']
       }
     },
-    // created() {
-    //   this.$store.dispatch('auth/currentUserInfo')
-    // },
     methods: {
       handleSubmit() {
         this.$store

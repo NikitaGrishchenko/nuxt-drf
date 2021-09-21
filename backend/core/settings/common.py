@@ -144,8 +144,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    # "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -159,17 +158,11 @@ SIMPLE_JWT = {
     "AUTH_COOKIE_HTTP_ONLY": True,
     "AUTH_COOKIE_PATH": "/",
     "AUTH_COOKIE_SAMESITE": "Strict",
-    # payload
-    "PAYLOAD_COOKIE": "payload",
-    "PAYLOAD_COOKIE_LIFETIME": timedelta(days=1),
-    "PAYLOAD_COOKIE_SAMESITE": "Strict",
-    "PAYLOAD_COOKIE_SECURE": False,
 }
 
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    # "http://localhost:8000",
 ]
 
 CORS_ALLOW_CREDENTIALS = True

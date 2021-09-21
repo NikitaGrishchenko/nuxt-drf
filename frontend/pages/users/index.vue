@@ -8,7 +8,6 @@
         {{ user.username }}
       </v-col>
       <v-col cols="12">
-        <v-btn @click="refreshToken">Refresh Token</v-btn>
         {{ userInfo }}
       </v-col>
     </v-row>
@@ -25,16 +24,9 @@
       }
     },
     created() {
-      this.$axios.get('base/users/').then((response) => {
+      this.$axios.get('auth/user/list/').then((response) => {
         this.users = response.data
       })
-    },
-    methods: {
-      refreshToken() {
-        this.$axios.get('base/user/checking/').then((response) => {
-          this.userInfo = response
-        })
-      }
     }
   }
 </script>

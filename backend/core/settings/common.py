@@ -10,7 +10,6 @@ APPS_DIR = os.path.join(BACKEND_DIR, "apps")
 PROJECT_DIR = os.path.dirname(BACKEND_DIR)
 FRONTEND_DIR = os.path.join(PROJECT_DIR, "frontend")
 ASSETS_DIR = os.path.join(FRONTEND_DIR, "assets")
-# TEMPLATES_DIR = os.path.join(FRONTEND_DIR, "templates")
 DIST_DIR = os.path.join(ASSETS_DIR, "dist")
 WEBPACK_STATS_FILE = os.path.join(DIST_DIR, "webpack-stats.json")
 PUBLIC_MEDIA_DIR = os.path.join(ASSETS_DIR, "media")
@@ -42,7 +41,6 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "service_objects",
     "apps.base",
-    # "core.api",
 ]
 
 
@@ -93,12 +91,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Auth
-
-# LOGIN_REDIRECT_URL = "home"
-# LOGOUT_REDIRECT_URL = "home"
-
-# AUTH_USER_MODEL = "base.User"
 
 # Internationalization
 
@@ -112,19 +104,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-# webpack
-
-# WEBPACK_LOADER = {
-#     "DEFAULT": {
-#         "BUNDLE_DIR_NAME": "dist/",
-#         "STATS_FILE": WEBPACK_STATS_FILE,
-#     }
-# }
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 
 STATIC_URL = "/static/"
 STATIC_ROOT = PUBLIC_STATIC_DIR
@@ -159,7 +141,6 @@ SIMPLE_JWT = {
     "AUTH_COOKIE_PATH": "/",
     "AUTH_COOKIE_SAMESITE": "Strict",
 }
-
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",

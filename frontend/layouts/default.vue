@@ -29,7 +29,6 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        {{ user }}
         <Nuxt />
       </v-container>
     </v-main>

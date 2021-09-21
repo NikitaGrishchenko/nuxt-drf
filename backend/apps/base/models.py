@@ -13,7 +13,6 @@ from django.utils.translation import ugettext_lazy as _
 
 class User(AbstractBaseUser, PermissionsMixin):
 
-    # id = models.AutoField(primary_key=True)
     username = models.CharField(
         _("username"),
         max_length=30,

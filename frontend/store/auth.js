@@ -35,7 +35,7 @@ export const actions = {
   login({ commit }, { username, password }) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .post('base/login/', { username, password })
+        .post('auth/login/', { username, password })
         .then((response) => {
           commit(LOGIN)
           resolve(response)
@@ -50,7 +50,7 @@ export const actions = {
   logout({ commit }) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .post('base/logout/')
+        .post('auth/logout/')
         .then((response) => {
           commit(LOGOUT)
           resolve(response)
@@ -65,14 +65,14 @@ export const actions = {
   currentUserInfo({ commit }) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .get('base/user/info/')
+        .get('auth/user/info/')
         .then((response) => {
           const userData = response.data
           commit(GET_USER, userData)
           resolve(response)
         })
         .catch((error) => {
-          // commit(LOGOUT)
+          commit(LOGOUT)
           reject(error)
         })
     })

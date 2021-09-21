@@ -1,24 +1,16 @@
-# from apps.base.models import User
-
 import datetime
 
 from apps.base.services import GetUserCookieHttponly
-from apps.base.v1.serializers import TokenObtainPairSerializer, UserSerializer
+from apps.base.v1.serializers import UserSerializer
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
-from django.http import HttpResponse, JsonResponse
-from django.middleware import csrf
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import (
-    TokenRefreshView as BaseTokenRefreshView,
-)
 
 
 class CheckUserTokenView(APIView):

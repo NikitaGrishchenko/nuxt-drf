@@ -1,10 +1,4 @@
-// import axios from 'axios'
-// import Cookies from 'js-cookie'
-// import jwtDecode from 'jwt-decode'
-
-export const LOGOUT = 'LOGOUT'
-export const LOGIN = 'LOGIN'
-export const GET_USER = 'GET_USER'
+import * as types from '../constants'
 
 export const state = () => ({
   user: null,
@@ -14,19 +8,22 @@ export const state = () => ({
 export const getters = {
   user: (state) => {
     return state.user
+  },
+  isAuthenticated: (state) => {
+    return state.isAuthenticated
   }
 }
 
 export const mutations = {
-  [LOGIN](state) {
+  [types.LOGIN](state) {
     state.isAuthenticated = true
   },
 
-  [LOGOUT](state) {
+  [types.LOGOUT](state) {
     state.isAuthenticated = false
   },
 
-  [GET_USER](state, userData) {
+  [types.GET_USER](state, userData) {
     state.user = userData
   }
 }
@@ -37,11 +34,11 @@ export const actions = {
       this.$axios
         .post('auth/login/', { username, password })
         .then((response) => {
-          commit(LOGIN)
+          commit(types.LOGIN)
           resolve(response)
         })
         .catch((error) => {
-          commit(LOGOUT)
+          commit(types.LOGOUT)
           reject(error)
         })
     })
@@ -52,11 +49,11 @@ export const actions = {
       this.$axios
         .post('auth/logout/')
         .then((response) => {
-          commit(LOGOUT)
+          commit(types.LOGOUT)
           resolve(response)
         })
         .catch((error) => {
-          commit(LOGOUT)
+          commit(types.LOGOUT)
           reject(error)
         })
     })
@@ -68,11 +65,11 @@ export const actions = {
         .get('auth/user/info/')
         .then((response) => {
           const userData = response.data
-          commit(GET_USER, userData)
+          commit(types.GET_USER, userData)
           resolve(response)
         })
         .catch((error) => {
-          commit(LOGOUT)
+          commit(types.LOGOUT)
           reject(error)
         })
     })

@@ -1,7 +1,7 @@
 import datetime
 
 from apps.base.services import GetUserCookieHttponly
-from apps.base.v1.serializers import UserSerializer
+from apps.base.v1.serializers import UserCreateSerializer, UserSerializer
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.http import HttpResponse
@@ -11,6 +11,8 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+
+User = get_user_model()
 
 
 class CheckUserTokenView(APIView):
@@ -109,3 +111,13 @@ class LoginView(APIView):
                 {"Invalid": "Invalid username or password!!"},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+class UserCreateView(ListCreateAPIView):
+    """Список и создание пользователя"""
+
+    serializer_class = UserCreateSerializer
+    queryset = User.objects.all()
+
+    def get_object(self):
+        return User.objects.get(pk=self.request.user.pk)

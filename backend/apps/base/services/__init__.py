@@ -1,3 +1,4 @@
+from .create_user import CreateUser
 from .get_user_cookie_httponly import GetUserCookieHttponly
 
-__All__ = [GetUserCookieHttponly]
+__All__ = [GetUserCookieHttponly, CreateUser]

@@ -2,6 +2,7 @@ from apps.base.v1.views import (
     CheckUserTokenView,
     LoginView,
     LogoutView,
+    UserCreateView,
     UserInformationView,
     UserListView,
 )
@@ -20,5 +21,6 @@ urlpatterns = [
     # user
     path("user/info/", UserInformationView.as_view(), name="user-info"),
     path("user/check/", CheckUserTokenView.as_view(), name="user-check"),
+    path("user/create/", UserCreateView.as_view(), name="user-create"),
     path("user/list/", UserListView.as_view(), name="user-list"),
 ]

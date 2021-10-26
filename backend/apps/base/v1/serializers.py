@@ -17,13 +17,22 @@ class UserSerializer(ModelSerializer):
 class UserCreateSerializer(ModelSerializer):
     """Создание нового пользователя"""
 
-    password_confirmation = serializers.CharField()
+    password_confirmation = serializers.CharField(
+        write_only=True, max_length=100
+    )
 
     class Meta:
         model = User
-        fields = "__all__"
+        fields = [
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+            "password_confirmation",
+        ]
 
     def create(self, validated_data):
+        print(validated_data)
         email_data = validated_data.pop("email")
         password_data = validated_data.pop("password")
         first_name_data = validated_data.pop("first_name")

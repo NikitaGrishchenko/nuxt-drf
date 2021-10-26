@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -116,6 +117,7 @@ class LoginView(APIView):
 class UserCreateView(ListCreateAPIView):
     """Список и создание пользователя"""
 
+    permission_classes = [AllowAny]
     serializer_class = UserCreateSerializer
     queryset = User.objects.all()
 

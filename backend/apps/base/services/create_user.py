@@ -6,7 +6,7 @@ from service_objects.services import Service
 class CreateUser(Service):
     """Сервис для создания пользователя"""
 
-    username = forms.CharField()
+    email = forms.CharField()
     password = forms.CharField()
     password_confirmation = forms.CharField()
 
@@ -15,7 +15,7 @@ class CreateUser(Service):
     # patronymic = forms.CharField(required=False)
 
     def process(self):
-        username = self.cleaned_data["username"]
+        email = self.cleaned_data["email"]
         password = self.cleaned_data["password"]
         password_confirmation = self.cleaned_data["password_confirmation"]
 
@@ -24,7 +24,9 @@ class CreateUser(Service):
         # patronymic = self.cleaned_data["patronymic"]
 
         User = get_user_model()
-        user = User.objects.create_user(username=username, password=password)
+        user = User.objects.create_user(
+            username=email, email=email, password=password
+        )
         user.first_name = first_name
         user.last_name = last_name
         # if patronymic:

@@ -9,27 +9,27 @@
         <v-col cols="12">
           <v-form>
             <v-text-field
-              v-model.trim="user.lastName"
+              v-model.trim="firstName"
               label="Имя"
               type="text"
             ></v-text-field>
             <v-text-field
-              v-model.trim="user.firstName"
+              v-model.trim="lastName"
               label="Фамилия"
               type="text"
             ></v-text-field>
             <v-text-field
-              v-model.trim="user.email"
+              v-model.trim="email"
               label="E-mail"
               type="email"
             ></v-text-field>
             <v-text-field
-              v-model.trim="user.password"
+              v-model.trim="password"
               label="Пароль"
               type="password"
             ></v-text-field>
             <v-text-field
-              v-model.trim="user.passwordConfirmation"
+              v-model.trim="passwordConfirmation"
               label="Подтверждение пароля"
               type="password"
             ></v-text-field>
@@ -52,13 +52,11 @@
     layout: 'zero',
     data() {
       return {
-        user: {
-          lastName: '',
-          firstName: '',
-          email: '',
-          password: '',
-          passwordConfirmation: ''
-        },
+        lastName: '',
+        firstName: '',
+        email: '',
+        password: '',
+        passwordConfirmation: '',
         loading: false
       }
     },
@@ -74,8 +72,16 @@
         //   return
         // }
 
+        const data = {
+          last_name: this.lastName,
+          first_name: this.firstName,
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.passwordConfirmation
+        }
+
         this.$axios
-          .post('auth/user/create/', this.user)
+          .post('auth/user/create/', data)
           .then((response) => {
             print(this.user)
           })

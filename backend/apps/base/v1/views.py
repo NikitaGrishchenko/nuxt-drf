@@ -1,6 +1,9 @@
 import datetime
 
-from apps.base.services import GetUserCookieHttponly
+from apps.base.services import (
+    CheckingUniquenessEmailUser,
+    GetUserCookieHttponly,
+)
 from apps.base.v1.serializers import UserCreateSerializer, UserSerializer
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
@@ -14,6 +17,16 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
+
+
+class UserEmailCheckView(APIView):
+    """Проверка на уникальность электронной почты во время регистрации"""
+
+    permission_classes = [AllowAny]
+
+    def post(self, request, format=None):
+        user_email = request.data["email"]
+        return CheckingUniquenessEmailUser.execute({"user_email": user_email})
 
 
 class CheckUserTokenView(APIView):

@@ -4,7 +4,7 @@
       <v-col cols="12">
         <h1>Пользователи</h1>
       </v-col>
-      <v-col v-for="user in users" :key="user.id" cols="4">
+      <v-col v-for="user in users" :key="user.id" cols="12">
         {{ user.username }}
       </v-col>
       <v-col cols="12">

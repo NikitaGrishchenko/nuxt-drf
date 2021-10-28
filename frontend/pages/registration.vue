@@ -103,8 +103,11 @@
         email: '',
         password: '',
         passwordConfirmation: '',
+        // уникальный email уникальный false иначе true
+        emailUserNotUnique: false,
         loading: false,
         showPassword: false,
+        // вкл/выкл идекатора загрузки для поля email, при выполнении запроса
         loadingCheckEmail: false
       }
     },
@@ -126,6 +129,7 @@
         if (!this.$v.email.$dirty) return errors
         !this.$v.email.required && errors.push('Это обязательное поле')
         !this.$v.email.email && errors.push('Некорректный E-mail')
+        !this.emailUserNotUnique && errors.push('Такой E-mail уже существует')
         return errors
       },
       passwordErrors() {
@@ -157,7 +161,9 @@
           this.$axios
             .post('auth/user/email-check/', { email }, { progress: false })
             .then((response) => {
-              console.log(response)
+              response.data.success === false
+                ? (this.emailUserNotUnique = false)
+                : (this.emailUserNotUnique = true)
               this.loadingCheckEmail = false
               resolve(response)
             })

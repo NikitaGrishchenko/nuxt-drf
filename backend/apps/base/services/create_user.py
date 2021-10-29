@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from service_objects.services import Service
 
 
@@ -21,16 +22,21 @@ class CreateUser(Service):
 
         first_name = self.cleaned_data["first_name"]
         last_name = self.cleaned_data["last_name"]
-        # patronymic = self.cleaned_data["patronymic"]
 
-        User = get_user_model()
-        user = User.objects.create_user(
-            username=email, email=email, password=password
-        )
-        user.first_name = first_name
-        user.last_name = last_name
-        # if patronymic:
-        #     user.patronymic = patronymic
-        user.save()
+        users = get_user_model()
+
+        if password != password_confirmation:
+            raise forms.ValidationError('Passwords must be same')
+
+        try:
+            user = users.objects.get(email=email)
+        except ObjectDoesNotExist:
+            user = users.objects.create_user(
+                username=email, email=email, password=password
+            )
+            user.first_name = first_name
+            user.last_name = last_name
+
+            user.save()
 
         return user

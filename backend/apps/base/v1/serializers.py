@@ -32,7 +32,6 @@ class UserCreateSerializer(ModelSerializer):
         ]
 
     def create(self, validated_data):
-        print(validated_data)
         email_data = validated_data.pop("email")
         password_data = validated_data.pop("password")
         first_name_data = validated_data.pop("first_name")
@@ -40,9 +39,9 @@ class UserCreateSerializer(ModelSerializer):
         password_confirmation_data = validated_data.pop(
             "password_confirmation"
         )
-        print(password_confirmation_data)
+
         # Вызов сервиса - создание пользователя
-        user = CreateUser.execute(
+        return CreateUser.execute(
             {
                 "email": email_data,
                 "password": password_data,
@@ -51,5 +50,3 @@ class UserCreateSerializer(ModelSerializer):
                 "password_confirmation": password_confirmation_data,
             }
         )
-
-        return user

@@ -72,7 +72,7 @@
                 <v-btn
                   class="mr-3"
                   color="primary"
-                  :loading="loading"
+                  :loading="loadingSubmitForm"
                   @click="submitForm()"
                   >Отправить</v-btn
                 >
@@ -105,7 +105,9 @@
         passwordConfirmation: '',
         // уникальный email уникальный false иначе true
         emailUserNotUnique: false,
-        loading: false,
+        // загрузка после нажатия на кнопку отправки формы
+        loadingSubmitForm: false,
+        // показать/скрыть
         showPassword: false,
         // вкл/выкл идекатора загрузки для поля email, при выполнении запроса
         loadingCheckEmail: false
@@ -176,11 +178,11 @@
     },
     methods: {
       submitForm() {
-        this.loading = true
+        this.loadingSubmitForm = true
 
         if (this.$v.$invalid) {
           this.$v.$touch()
-          this.loading = false
+          this.loadingSubmitForm = false
           return
         }
 
@@ -191,21 +193,26 @@
           password: this.password,
           password_confirmation: this.passwordConfirmation
         }
-        return new Promise((resolve, reject) => {
+        const registrationPromise = new Promise((resolve, reject) => {
           this.$axios
             .post('auth/user/create/', data)
             .then((response) => {
               this.cleanInputData()
-              this.loading = false
-              console.log(response)
+              this.loadingSubmitForm = false
               resolve(response)
             })
             .catch((error) => {
-              this.loading = false
+              this.loadingSubmitForm = false
               reject(error)
             })
         })
+        registrationPromise.then((response) => {
+          if (response.status === 201) {
+            this.$router.push('/login')
+          }
+        })
       },
+      // очистка полей и установленние дефолтных значений
       cleanInputData() {
         this.lastName = ''
         this.firstName = ''

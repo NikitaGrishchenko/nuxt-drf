@@ -19,7 +19,6 @@ class CheckingUniquenessEmailUser(Service):
 
         try:
             user = users.objects.get(email=user_email)
-            print(user)
             if user:
                 content = {"success": False}
                 return Response(content)

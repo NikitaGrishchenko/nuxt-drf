@@ -4,9 +4,7 @@
       <v-row>
         <v-flex xs12 sm6 lg4 offset-lg-4 offset-sm-3>
           <v-card class="elevation-12">
-            <v-toolbar dark color="primary">
-              <!-- <v-toolbar-title>Войти</v-toolbar-title> -->
-            </v-toolbar>
+            <v-toolbar dark color="primary"> </v-toolbar>
             <v-card-text>
               <v-form>
                 <v-text-field
@@ -39,10 +37,6 @@
               >
               <NuxtLink to="/registration">Регистрация</NuxtLink>
             </v-card-actions>
-            <!-- <Snackbar
-              :view-snackbar="snackbar"
-              :text="`Логин или пароль введен неверноww`"
-            ></Snackbar> -->
           </v-card>
         </v-flex>
       </v-row>
@@ -52,6 +46,8 @@
 
 <script>
   import { required } from 'vuelidate/lib/validators'
+  import { Toast } from '../plugins/swal'
+
   export default {
     layout: 'zero',
     middleware: 'login',
@@ -63,9 +59,7 @@
       return {
         username: '',
         password: '',
-        loading: false,
-        snackbar: false,
-        multiLine: true
+        loading: false
       }
     },
     computed: {
@@ -94,11 +88,6 @@
           return
         }
 
-        // if (username === '' || password === '') {
-        //   this.loading = false
-        //   // this.snackbar = true
-        //   return
-        // }
         this.$store
           .dispatch('auth/login', { username, password })
           .then(() => {
@@ -107,7 +96,11 @@
           })
           .catch(() => {
             this.loading = false
-            this.snackbar = true
+            return Toast.fire({
+              title: 'Неверный логин или пароль',
+              icon: 'error',
+              timer: 3000
+            })
           })
       }
     }

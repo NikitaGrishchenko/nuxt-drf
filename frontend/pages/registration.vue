@@ -78,7 +78,6 @@
                 >
               </v-col>
             </v-row>
-            <v-btn @click="testBtn">!!!!!!</v-btn>
           </v-form>
         </v-col>
       </v-row>
@@ -87,9 +86,9 @@
 </template>
 
 <script>
-  import Swal from 'sweetalert2'
-
   import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
+  import { Toast } from '../plugins/swal'
+
   export default {
     layout: 'zero',
     validations: {
@@ -182,21 +181,6 @@
       }
     },
     methods: {
-      testBtn() {
-        return Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'success',
-          title: 'Вы успешно зарегистрировались',
-          timer: 10000,
-          customClass: {
-            title: 'custom-swal__title',
-            container: 'custom-swal__container'
-          },
-          showCloseButton: true,
-          showConfirmButton: false
-        })
-      },
       submitForm() {
         this.loadingSubmitForm = true
 
@@ -229,12 +213,9 @@
         registrationPromise.then((response) => {
           if (response.status === 201) {
             this.$router.push('/login')
-            return Swal.fire({
-              toast: true,
-              position: 'top-end',
+            return Toast.fire({
               icon: 'success',
-              title: 'Вы успешно зарегистрировались',
-              timer: 10000
+              title: 'Вы успешно зарегистрировались'
             })
           }
         })
@@ -252,8 +233,3 @@
     }
   }
 </script>
-
-<style lang="sass">
-  // .custom-swal__title
-  //   color: red !important
-</style>

@@ -39,20 +39,10 @@
               >
               <NuxtLink to="/registration">Регистрация</NuxtLink>
             </v-card-actions>
-            <v-snackbar v-model="snackbar">
-              Неверный логин или пароль
-              <template #action="{ attrs }">
-                <v-btn
-                  color="red"
-                  fab
-                  x-small
-                  v-bind="attrs"
-                  @click="snackbar = false"
-                >
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </template>
-            </v-snackbar>
+            <!-- <Snackbar
+              :view-snackbar="snackbar"
+              :text="`Логин или пароль введен неверноww`"
+            ></Snackbar> -->
           </v-card>
         </v-flex>
       </v-row>
@@ -118,18 +108,8 @@
           .catch(() => {
             this.loading = false
             this.snackbar = true
-            this.login = ''
           })
       }
     }
   }
 </script>
-
-<style lang="sass" scoped>
-  .login
-    min-height: 100vh
-    display: flex
-    align-items: center
-  .v-card__actions
-    padding: 0px 16px 25px 16px !important
-</style>

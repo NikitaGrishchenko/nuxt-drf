@@ -78,6 +78,7 @@
                 >
               </v-col>
             </v-row>
+            <v-btn @click="testBtn">!!!!!!</v-btn>
           </v-form>
         </v-col>
       </v-row>
@@ -86,6 +87,8 @@
 </template>
 
 <script>
+  import Swal from 'sweetalert2'
+
   import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
   export default {
     layout: 'zero',
@@ -104,7 +107,7 @@
         password: '',
         passwordConfirmation: '',
         // уникальный email уникальный false иначе true
-        emailUserNotUnique: false,
+        emailUserNotUnique: true,
         // загрузка после нажатия на кнопку отправки формы
         loadingSubmitForm: false,
         // показать/скрыть
@@ -159,14 +162,10 @@
           return
         }
         this.loadingCheckEmail = true
-        return new Promise((resolve, reject) => {
+        const checkEmailPromise = new Promise((resolve, reject) => {
           this.$axios
             .post('auth/user/email-check/', { email }, { progress: false })
             .then((response) => {
-              response.data.success === false
-                ? (this.emailUserNotUnique = false)
-                : (this.emailUserNotUnique = true)
-              this.loadingCheckEmail = false
               resolve(response)
             })
             .catch((error) => {
@@ -174,9 +173,30 @@
               reject(error)
             })
         })
+        checkEmailPromise.then((response) => {
+          response.data.success === false
+            ? (this.emailUserNotUnique = false)
+            : (this.emailUserNotUnique = true)
+          this.loadingCheckEmail = false
+        })
       }
     },
     methods: {
+      testBtn() {
+        return Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Вы успешно зарегистрировались',
+          timer: 10000,
+          customClass: {
+            title: 'custom-swal__title',
+            container: 'custom-swal__container'
+          },
+          showCloseButton: true,
+          showConfirmButton: false
+        })
+      },
       submitForm() {
         this.loadingSubmitForm = true
 
@@ -209,6 +229,13 @@
         registrationPromise.then((response) => {
           if (response.status === 201) {
             this.$router.push('/login')
+            return Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'Вы успешно зарегистрировались',
+              timer: 10000
+            })
           }
         })
       },
@@ -225,3 +252,8 @@
     }
   }
 </script>
+
+<style lang="sass">
+  // .custom-swal__title
+  //   color: red !important
+</style>

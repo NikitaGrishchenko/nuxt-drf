@@ -16,6 +16,9 @@
     "js-cookie": "^3.0.0",
     "jwt-decode": "^3.1.2",
     "nuxt": "^2.15.7",
+    "sass": "^1.43.4",
+    "sass-loader": "^10",
+    "sweetalert2": "^11.1.9",
     "vuelidate": "^0.7.6",
     "vuetify": "^2.5.5"
   },

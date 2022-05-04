@@ -25,6 +25,7 @@ export const mutations = {
 
   [types.GET_USER](state, userData) {
     state.user = userData
+    state.isAuthenticated = true
   }
 }
 
@@ -74,4 +75,19 @@ export const actions = {
         })
     })
   }
+
+  // checkAuthUser({ commit }) {
+  //   return new Promise((resolve, reject) => {
+  //     this.$axios
+  //       .get('auth/user/check/')
+  //       .then((response) => {
+  //         // const userData = response.data
+  //         // commit(types.GET_USER, userData)
+  //       })
+  //       .catch((error) => {
+  //         // commit(types.LOGOUT)
+  //         reject(error)
+  //       })
+  //   })
+  // }
 }

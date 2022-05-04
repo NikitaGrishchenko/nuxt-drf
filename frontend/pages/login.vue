@@ -50,7 +50,7 @@
 
   export default {
     layout: 'zero',
-    middleware: 'login',
+    middleware: 'auth',
     validations: {
       username: { required },
       password: { required }

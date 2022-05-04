@@ -91,6 +91,7 @@
 
   export default {
     layout: 'zero',
+    middleware: 'auth',
     validations: {
       firstName: { required },
       lastName: { required },
